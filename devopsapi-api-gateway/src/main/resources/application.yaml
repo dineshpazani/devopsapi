@@ -5,8 +5,7 @@ server:
 
 spring:
   application:
-    name: devopsapi-gateway
-  zipkin.base-url: http://localhost:8083/
+    name: devopsapi
   
 
     
