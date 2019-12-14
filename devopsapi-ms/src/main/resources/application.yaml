@@ -15,3 +15,13 @@ eureka:
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
+    
+
+feign:
+  hystrix:
+    enabled: true   # 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # because springboot2.1. must be added, support access /actuator/hystrix.stream

@@ -36,7 +36,11 @@ zuul:
   ribbonIsolationStrategy: THREAD #Set the Hystrix isolation policy to the thread pool
   threadPool:
     useSeparateThreadPools: true #each route uses a separate thread pool
-
+    
+    
+feign:
+  hystrix:
+    enabled: true   # 
 
 
 
