@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: devopsapi
+    name: devopsapi-gateway
   
 
     
@@ -19,3 +19,25 @@ eureka:
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
+    
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream, info, health
+        
+turbine:
+  app-config: devops-dataservice,devops-messageservice
+  cluster-name-expression: new String("default")
+  
+  
+zuul: 
+  ribbonIsolationStrategy: THREAD #Set the Hystrix isolation policy to the thread pool
+  threadPool:
+    useSeparateThreadPools: true #each route uses a separate thread pool
+
+
+
+
+

@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: devops-ms
+    name: devops-messageservice
   
 eureka:
   client:

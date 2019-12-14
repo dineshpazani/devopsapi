@@ -8,3 +8,8 @@ https://codar.club/blogs/summarizing-api-interface-documents-using-swagger-in-sp
 https://github.com/SpringCloud/sample-zuul-swagger2
 
 http://localhost:8080/hystrix
+http://localhost:8080/actuator/hystrix.stream
+
+
+Hystrix-turbine:
+https://medium.com/@27.rahul.k/build-a-sample-project-with-spring-cloud-using-cloud-config-eureka-zuul-feign-hystrix-and-378b16bcb7c3

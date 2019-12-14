@@ -58,7 +58,7 @@ public class SwaggerConfig implements SwaggerResourcesProvider {
 	public List<SwaggerResource> get() {
 		// Dynamic introduction of micro services using routeLocator
 		List<SwaggerResource> resources = new ArrayList<>();
-		resources.add(swaggerResource("devopsapi", "/v2/api-docs", "1.0"));
+		resources.add(swaggerResource("devopsapi-gateway", "/v2/api-docs", "1.0"));
 		// Recycling Lambda expressions to simplify code
 		routeLocator.getRoutes().forEach(route -> {
 			// Dynamic acquisition

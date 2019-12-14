@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.devopsapi.config.CustomFeignConfig;
 
-@FeignClient(name="devops-ds")
+@FeignClient(name="DEVOPS-DATASERVICE")
 public interface DsService {
 	
 	@GetMapping("/test/get")
