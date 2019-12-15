@@ -9,7 +9,7 @@ import com.devopsapi.service.DsService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
-@RequestMapping(path = "/test")
+@RequestMapping(path = "/api")
 public class ApiController {
 	
 	@Autowired

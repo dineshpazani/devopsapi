@@ -33,7 +33,7 @@ management:
         include: hystrix.stream, info, health
         
 turbine:
-  app-config: devops-dataservice,devops-messageservice
+  app-config: DEVOPS-DATASERVICE,devops-messageservice
   cluster-name-expression: new String("default")
   
   
@@ -51,11 +51,11 @@ zuul:
     test:
       path: /redirect/**
       url: http://google.com
-    devops-dataservice:
-      path: /customer-by-address/**
-      url: http://localhost:9098
+    DEVOPS-DATASERVICE:
+      path: /dataservice/**
+      url: DEVOPS-DATASERVICE
     devops-messageservice:
-      path: /customer-by-service/**
+      path: /messageservice/**
       serviceId: devops-messageservice
     
     

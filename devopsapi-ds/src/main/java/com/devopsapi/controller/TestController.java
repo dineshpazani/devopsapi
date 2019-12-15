@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
-@RequestMapping(path = "/test")
+@RequestMapping(path = "/v1")
 public class TestController {
 	
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
