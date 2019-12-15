@@ -9,7 +9,12 @@ spring:
   cloud:
     service-registry:
       auto-registration:
-        enabled: false  
+        enabled: true
+        
+  security:
+    user:
+      name: admin
+      password: pwd  
     
     
   datasource:

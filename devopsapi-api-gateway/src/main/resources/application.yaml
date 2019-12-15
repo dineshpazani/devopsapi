@@ -6,8 +6,13 @@ server:
 spring:
   application:
     name: devopsapi-gateway
-  
+    
 
+  security:
+    user:
+      name: admin
+      password: 
+      
     
 eureka:
   client:
