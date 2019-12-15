@@ -11,6 +11,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.devopsapi.filter.ErrorFilter;
+import com.devopsapi.filter.PostFilter;
+import com.devopsapi.filter.PreFilter;
+import com.devopsapi.filter.RouteFilter;
+
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -34,6 +39,27 @@ public class DevopsApiGatewayApp {
 	UiConfiguration uiConfig() {
 		return new UiConfiguration("validatorUrl", "list", "alpha", "schema",
 				UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS, false, true, 60000L);
+	}
+	
+	
+	@Bean
+	public PreFilter preFilter() {
+		return new PreFilter();
+	}
+
+	@Bean
+	public PostFilter postFilter() {
+		return new PostFilter();
+	}
+
+	@Bean
+	public ErrorFilter errorFilter() {
+		return new ErrorFilter();
+	}
+
+	@Bean
+	public RouteFilter routeFilter() {
+		return new RouteFilter();
 	}
 
 }

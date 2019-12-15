@@ -42,6 +42,22 @@ zuul:
   threadPool:
     useSeparateThreadPools: true #each route uses a separate thread pool
     
+
+  #Service will be mapped under the /api URI
+  prefix: /api
+  #  Uncomment to disable auto-registering all services read from Eureka
+  #  ignoredServices: '*'
+  routes:
+    test:
+      path: /redirect/**
+      url: http://google.com
+    devops-dataservice:
+      path: /customer-by-address/**
+      url: http://localhost:9098
+    devops-messageservice:
+      path: /customer-by-service/**
+      serviceId: devops-messageservice
+    
     
 feign:
   hystrix:
