@@ -47,12 +47,13 @@ public class TestController {
 	@GetMapping(path = "/stream", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
 	public Flux<String> getstream() {
 		
-		ExecutorService executor = Executors.newFixedThreadPool(20);
+		ExecutorService executor = Executors.newFixedThreadPool(5);
 		
 		
 		List<CompletableFuture> list = new ArrayList<>();
 		
 		AtomicInteger ai = new AtomicInteger(1);
+		RestTemplate restTemplate = new RestTemplate();
 		
 		for(int i=0;i<100;i++) {
 			CompletableFuture<Object> cff = null;
@@ -62,16 +63,10 @@ public class TestController {
 				}).thenApplyAsync(v -> {
 					
 					Random r = new Random();
-					Integer in = r.nextInt(1000);
+					Integer in = r.nextInt(1000);			
+				
 					
-					try {
-						
-						Thread.sleep(in);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					
-					return v+" second values "+in+" \n";
+					return v+" second values "+in+" "+restTemplate.getForObject("http://dummy.restapiexample.com/api/v1/employee/"+ai.get(), String.class) +" \n";
 				}, executor);
 
 				list.add(cff);
