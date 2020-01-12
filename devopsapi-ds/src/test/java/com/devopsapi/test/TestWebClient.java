@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import reactor.core.publisher.Mono;
+
 public class TestWebClient {
 	
 
@@ -51,13 +53,18 @@ public class TestWebClient {
 			public String get() {
 				
 				
-				WebClient.builder()
-		        .baseUrl("http://dummy.restapiexample.com/api/v1/employee/"+id)
-		        .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-		        .defaultHeader(HttpHeaders.USER_AGENT, "Spring 5 WebClient")
-		        .build()
-		        .get().exchange();
 				
+				
+				WebClient webClient = WebClient
+						.create("http://dummy.restapiexample.com/api/v1/employee/+id");
+				
+				
+			      Mono<String> result = webClient.get()			    		  
+			                                     .retrieve()
+			                                     .bodyToMono(String.class);
+				/*
+				 * String response = result.block(); System.out.println(response);
+				 */
 				return "Ok";
 			}
 		});
