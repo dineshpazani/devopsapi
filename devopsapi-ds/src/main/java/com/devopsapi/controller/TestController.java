@@ -2,6 +2,14 @@ package com.devopsapi.controller;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
@@ -34,6 +42,55 @@ public class TestController {
 	          .event("periodic-event")
 	          .data("SSE - " + LocalTime.now().toString())
 	          .build());
+	}
+	
+	@GetMapping(path = "/stream", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	public Flux<String> getstream() {
+		
+		ExecutorService executor = Executors.newFixedThreadPool(20);
+		
+		
+		List<CompletableFuture> list = new ArrayList<>();
+		
+		AtomicInteger ai = new AtomicInteger(1);
+		
+		for(int i=0;i<100;i++) {
+			CompletableFuture<Object> cff = null;
+
+				cff = CompletableFuture.supplyAsync(() -> {
+					return ai.getAndAdd(1)+" first list";
+				}).thenApplyAsync(v -> {
+					
+					Random r = new Random();
+					Integer in = r.nextInt(1000);
+					
+					try {
+						
+						Thread.sleep(in);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					return v+" second values "+in+" \n";
+				}, executor);
+
+				list.add(cff);
+
+			
+		}
+		
+		
+		return Flux.fromStream(list.stream().map(m -> {
+			try {
+				
+				return m.get().toString();
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "";
+		}));
+		
 	}
 	
 	@GetMapping(path = "/test", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
