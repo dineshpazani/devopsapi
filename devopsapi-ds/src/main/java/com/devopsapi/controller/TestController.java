@@ -20,14 +20,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
 @RestController
 @RequestMapping(path = "/v1")
 public class TestController {
+	
+	
+	private final WebClient w = WebClient.create("http://dummy.restapiexample.com/api/v1/employee/1");
+
+
+	@GetMapping(path = "/stream1", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	public Flux<MyClass> getstream1() {
+	    return Flux.range(1, 100)
+	    			.window(10)
+	    		//	.delayElements(Duration.ofSeconds(5))
+	    			.doOnNext(flow -> System.out.println("Batch of 10 is ready "))
+	    			.flatMap(e ->  w.get().exchange())
+	    			.map(r -> r.bodyToMono(MyClass.class))	    		  
+	    			.flatMap(response -> Mono.create(s -> response.subscribe(s::success)));   			
+
+	}
+
+	
 
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public String getProducts() {
@@ -47,7 +67,7 @@ public class TestController {
 	@GetMapping(path = "/stream", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
 	public Flux<String> getstream() {
 		
-		ExecutorService executor = Executors.newFixedThreadPool(5);
+		ExecutorService executor = Executors.newFixedThreadPool(10);
 		
 		
 		List<CompletableFuture> list = new ArrayList<>();
@@ -59,14 +79,13 @@ public class TestController {
 			CompletableFuture<Object> cff = null;
 
 				cff = CompletableFuture.supplyAsync(() -> {
-					return ai.getAndAdd(1)+" first list";
+					return ai.getAndAdd(1)+" first downstream web service "+restTemplate.getForObject("http://dummy.restapiexample.com/api/v1/employee/"+ai.get(), String.class) ;
 				}).thenApplyAsync(v -> {
 					
 					Random r = new Random();
 					Integer in = r.nextInt(1000);			
-				
-					
-					return v+" second values "+in+" "+restTemplate.getForObject("http://dummy.restapiexample.com/api/v1/employee/"+ai.get(), String.class) +" \n";
+									
+					return v+" second downstream web service  "+in+" "+restTemplate.getForObject("http://dummy.restapiexample.com/api/v1/employee/"+ai.get()+1, String.class) +" \n";
 				}, executor);
 
 				list.add(cff);
@@ -80,7 +99,6 @@ public class TestController {
 				
 				return m.get().toString();
 			} catch (InterruptedException | ExecutionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return "";
@@ -138,4 +156,8 @@ public class TestController {
 	}
 	
 	
+}
+
+class MyClass {
+    public Integer i;
 }
